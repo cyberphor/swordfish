@@ -1,0 +1,6 @@
+autogen-ext
+autogen-agentchat
+autogen-core
+mcp[cli]
+openai
+tiktoken
