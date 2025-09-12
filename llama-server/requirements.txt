@@ -1,0 +1,4 @@
+fastapi
+gunicorn
+llama-cpp-python
+uvicorn

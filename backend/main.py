@@ -8,7 +8,6 @@ from autogen_ext.models.openai import OpenAIChatCompletionClient
 from autogen_ext.tools.mcp import mcp_server_tools
 from autogen_ext.tools.mcp import SseServerParams
 
-
 async def main():
     server_params = SseServerParams(url="http://mcp-server:8000/sse")
     tools = await mcp_server_tools(server_params)
