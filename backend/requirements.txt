@@ -1,6 +1,3 @@
-autogen-ext
-autogen-agentchat
-autogen-core
-mcp[cli]
+strands-agents
+strands-agents-tools
 openai
-tiktoken

@@ -1,13 +1,4 @@
 services:
-  llama-server:
-    profiles: [ all, llama-server ]
-    build: llama-server
-    image: ${CONTAINER_REGISTRY}/${CI_PROJECT_PATH}/llama-server:${LLAMA_SERVER_VERSION}
-    container_name: ${APP_NAME}-llama-server
-    ports:
-      - "8080:8080"
-    env_file:
-      - .env.local
 
   mcp-server:
     profiles: [ all, mcp-server ]
@@ -18,6 +9,7 @@ services:
       - "8000:8000"
     env_file:
       - .env.local
+      - .env.local.secrets
 
   backend:
     profiles: [ backend ]
@@ -28,13 +20,15 @@ services:
       - "8001:8001"
     env_file:
       - .env.local
+      - .env.local.secrets
 
-  frontend:
-    profiles: [ all, frontend ]
-    build: frontend
-    image: ${CONTAINER_REGISTRY}/${CI_PROJECT_PATH}/frontend:${FRONTEND_VERSION}
-    container_name: ${APP_NAME}-frontend
+  emass:
+    profiles: [ all, emass ]
+    build: emass
+    image: ${CONTAINER_REGISTRY}/${CI_PROJECT_PATH}/emass:${BACKEND_VERSION}
+    container_name: ${APP_NAME}-emass
     ports:
-      - "80:8000"
+      - "4010:4010"
     env_file:
       - .env.local
+      - .env.local.secrets
