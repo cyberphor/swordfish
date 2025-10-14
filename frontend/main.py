@@ -2,8 +2,8 @@
 import streamlit as st
 import requests
 
-st.title("Narwhal")
-API = st.text_input("API base", "http://localhost:8000")
+st.title("Swordfish")
+API = st.text_input("API base", "http://localhost:8001")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
