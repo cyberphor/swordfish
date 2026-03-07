@@ -8,4 +8,5 @@ RUN apk add --no-cache --update curl nodejs npm &&\
     adduser -D swordfish -h /home/swordfish &&\
     chown -R swordfish:swordfish /home/swordfish
 USER swordfish
+EXPOSE 4010
 CMD [ "prism", "mock", "eMASSRestOpenApi.yaml", "--host", "0.0.0.0", "--port", "4010" ]

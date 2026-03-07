@@ -1,34 +1,41 @@
 services:
 
-  mcp-server:
-    profiles: [ all, mcp-server ]
-    build: mcp-server
-    image: ${CONTAINER_REGISTRY}/${CI_PROJECT_PATH}/mcp-server:${MCP_SERVER_VERSION}
-    container_name: ${APP_NAME}-mcp-server
-    ports:
-      - "8000:8000"
-    env_file:
-      - .env.local
-      - .env.local.secrets
-
-  backend:
-    profiles: [ backend ]
-    build: backend
-    image: ${CONTAINER_REGISTRY}/${CI_PROJECT_PATH}/backend:${BACKEND_VERSION}
-    container_name: ${APP_NAME}-backend
-    ports:
-      - "8001:8001"
-    env_file:
-      - .env.local
-      - .env.local.secrets
-
   emass:
     profiles: [ all, emass ]
     build: emass
-    image: ${CONTAINER_REGISTRY}/${CI_PROJECT_PATH}/emass:${BACKEND_VERSION}
+    image: local/${APP_NAME}/emass:latest
     container_name: ${APP_NAME}-emass
     ports:
       - "4010:4010"
     env_file:
-      - .env.local
-      - .env.local.secrets
+      - .env
+
+  mcp-server:
+    profiles: [ all, mcp-server ]
+    build: mcp-server
+    image: local/${APP_NAME}/mcp-server:latest
+    container_name: ${APP_NAME}-mcp-server
+    ports:
+      - "8282:8282"
+    env_file:
+      - .env
+
+  backend:
+    profiles: [ all, backend ]
+    build: backend
+    image: local/${APP_NAME}/backend:latest
+    container_name: ${APP_NAME}-backend
+    ports:
+      - "8181:8181"
+    env_file:
+      - .env
+
+  frontend:
+    profiles: [ all, frontend ]
+    build: frontend
+    image: local/${APP_NAME}/frontend:latest
+    container_name: ${APP_NAME}-frontend
+    ports:
+      - "80:8501"
+    env_file:
+      - .env

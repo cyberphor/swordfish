@@ -8,5 +8,5 @@ RUN apk add --no-cache --update python3 py3-pip &&\
     adduser -D swordfish -h /home/swordfish &&\
     chown -R swordfish:swordfish /home/swordfish
 USER swordfish
-EXPOSE 8000
+EXPOSE 8282
 CMD [ "python", "-m", "swordfish.main", "server" ]

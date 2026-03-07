@@ -5,7 +5,7 @@ from strands_tools import calculator
 mcp = FastMCP(
     name="swordfish",
     host="0.0.0.0",
-    port=8000,
+    port=8282,
     debug=True,
     log_level="DEBUG"
 )

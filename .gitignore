@@ -210,3 +210,6 @@ __marimo__/
 *.gguf
 client.crt
 client.key
+
+uv.lock
+.env.secrets

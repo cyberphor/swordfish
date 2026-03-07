@@ -9,7 +9,7 @@ from strands.tools.mcp import MCPClient
 
 
 # Connect to an MCP server using SSE transport.
-sse_mcp_client = MCPClient(lambda: sse_client("http://localhost:8000/sse"))
+sse_mcp_client = MCPClient(lambda: sse_client("http://localhost:8282/sse"))
 
 # Create an agent with MCP tools.
 with sse_mcp_client:
