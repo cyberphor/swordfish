@@ -4,6 +4,8 @@ name: Integrate
 on:
   push:
     branches: [ "**" ]
+    paths-ignore:
+      - "docs/**"
 
 jobs:
   enumerate:
