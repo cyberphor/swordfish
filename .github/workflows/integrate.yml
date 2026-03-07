@@ -7,7 +7,7 @@ on:
 
 jobs:
   enumerate:
-    name: Enumerate
+    name: Container Enumeration
     runs-on: ubuntu-latest
     outputs:
       containers: ${{ steps.parse.outputs.containers }}
@@ -21,7 +21,7 @@ jobs:
           echo "containers=$containers" >> $GITHUB_OUTPUT
 
   secrets:
-    name: Secrets
+    name: Secrets Check
     runs-on: ubuntu-latest
     steps:
       - name: Clone the repository
@@ -32,7 +32,7 @@ jobs:
         continue-on-error: false
 
   qa:
-    name: ${{ matrix.container }}
+    name: Quality Assurance Check
     needs: enumerate 
     runs-on: ubuntu-latest
     strategy:
@@ -52,7 +52,7 @@ jobs:
         run: black --diff --color --check ${{ matrix.container }}
 
   sca:
-    name: ${{ matrix.container }}
+    name: Software Composition Analysis
     needs: enumerate
     runs-on: ubuntu-latest
     permissions:
@@ -77,7 +77,7 @@ jobs:
           severity-cutoff: high
 
   sast:
-    name: ${{ matrix.container }}
+    name: Static App Security Test
     needs: enumerate
     runs-on: ubuntu-latest
     strategy:
