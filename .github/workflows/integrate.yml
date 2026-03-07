@@ -4,8 +4,11 @@ name: Integrate
 on:
   push:
     branches: [ "**" ]
-    paths-ignore:
-      - "docs/**"
+    paths:
+      - "backend/**"
+      - "frontend/**"
+      - "emass/**"
+      - "mcp-server/**"
 
 jobs:
   enumerate:
