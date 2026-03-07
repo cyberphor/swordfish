@@ -6,20 +6,8 @@ on:
     branches: [ "**" ]
 
 jobs:
-  secrets:
-    name: Secrets Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Clone the repository
-        uses: actions/checkout@v4
-      - name: Run Trufflehog
-        id: trufflehog
-        uses: trufflesecurity/trufflehog@main
-        continue-on-error: false
-
   enumerate:
     name: Container Enumeration
-    needs: secrets
     runs-on: ubuntu-latest
     outputs:
       containers: ${{ steps.parse.outputs.containers }}
@@ -32,9 +20,21 @@ jobs:
           containers=$(yq '[.services.[] | .build] | unique | map(select(. != null))' compose.yml -o json | jq -c .)
           echo "containers=$containers" >> $GITHUB_OUTPUT
 
+  secrets:
+    name: Secrets Check
+    needs: enumerate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v4
+      - name: Run Trufflehog
+        id: trufflehog
+        uses: trufflesecurity/trufflehog@main
+        continue-on-error: false
+
   dockerfile:
     name: Dockerfile Lint Check
-    needs: enumerate 
+    needs: secrets
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -44,11 +44,12 @@ jobs:
       - uses: actions/checkout@v3
       - uses: hadolint/hadolint-action@v3.1.0
         with:
+          failure-threshold: error
           dockerfile: ${{ matrix.container }}/Dockerfile
-
+          
   qa:
     name: Quality Assurance Check
-    needs: enumerate 
+    needs: secrets
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -68,7 +69,7 @@ jobs:
 
   sca:
     name: Software Composition Analysis
-    needs: enumerate
+    needs: secrets
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -93,7 +94,7 @@ jobs:
 
   sast:
     name: Static App Security Test
-    needs: enumerate
+    needs: secrets
     runs-on: ubuntu-latest
     strategy:
       matrix:

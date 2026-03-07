@@ -15,8 +15,7 @@ for message in st.session_state.messages:
 if prompt := st.chat_input("Say something"):
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-
-    with st.chat_message("user"): 
+    with st.chat_message("user"):
         st.markdown(prompt)
 
     response = requests.post(f"{API}/api", json={"message": prompt}, timeout=60)
@@ -25,6 +24,5 @@ if prompt := st.chat_input("Say something"):
 
     st.session_state.messages.append({"role": "assistant", "content": text})
 
-
-    with st.chat_message("assistant"): 
+    with st.chat_message("assistant"):
         st.markdown(text)
