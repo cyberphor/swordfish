@@ -19,7 +19,6 @@ jobs:
         run: |
           containers=$(yq '[.services.[] | .build] | unique | map(select(. != null))' compose.yml -o json | jq -c .)
           echo "containers=$containers" >> $GITHUB_OUTPUT
-
   secrets:
     name: Secrets Check
     needs: enumerate
@@ -31,7 +30,6 @@ jobs:
         id: trufflehog
         uses: trufflesecurity/trufflehog@main
         continue-on-error: false
-
   dockerfile:
     name: Dockerfile Lint Check
     needs: [ secrets, enumerate ]
@@ -45,8 +43,7 @@ jobs:
       - uses: hadolint/hadolint-action@v3.1.0
         with:
           failure-threshold: error
-          dockerfile: ${{ matrix.container }}/Dockerfile
-          
+          dockerfile: ${{ matrix.container }}/Dockerfile    
   qa:
     name: Quality Assurance Check
     needs: [ secrets, enumerate ]
@@ -66,7 +63,6 @@ jobs:
         run: python -m pip install black
       - name: Check code formatting
         run: black --diff --color --check ${{ matrix.container }}
-
   sca:
     name: Software Composition Analysis
     needs: [ secrets, enumerate ]
@@ -91,7 +87,6 @@ jobs:
         with:
           sbom: sbom-${{ matrix.container }}.json
           severity-cutoff: high
-
   sast:
     name: Static App Security Test
     needs: [ secrets, enumerate ]
