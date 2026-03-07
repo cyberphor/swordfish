@@ -29,10 +29,7 @@ with sse_mcp_client:
     tools = sse_mcp_client.list_tools_sync()
 
     # Create an agent with these tools
-    agent = Agent(
-        model=model,
-        tools=tools
-    )
+    agent = Agent(model=model, tools=tools)
 
     response = agent(
         prompt="Today is 2025-10-13. I was born today, but in 1990. How many days has it been since then?"
