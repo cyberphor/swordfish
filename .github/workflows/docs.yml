@@ -26,7 +26,7 @@ jobs:
           path: site/
   deploy:
     name: Deploy docs
-    needs: docs-build
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       pages: write
