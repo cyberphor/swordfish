@@ -14,6 +14,7 @@ for message in st.session_state.messages:
 
 if prompt := st.chat_input("Say something"):
     st.session_state.messages.append({"role": "user", "content": prompt})
+
     with st.chat_message("user"): 
         st.markdown(prompt)
 
@@ -22,5 +23,6 @@ if prompt := st.chat_input("Say something"):
     text = response.json()["choices"][0]["text"]
 
     st.session_state.messages.append({"role": "assistant", "content": text})
+
     with st.chat_message("assistant"): 
         st.markdown(text)
