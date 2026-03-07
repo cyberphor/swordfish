@@ -34,7 +34,7 @@ jobs:
 
   dockerfile:
     name: Dockerfile Lint Check
-    needs: secrets
+    needs: [ secrets, enumerate ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -49,7 +49,7 @@ jobs:
           
   qa:
     name: Quality Assurance Check
-    needs: secrets
+    needs: [ secrets, enumerate ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -69,7 +69,7 @@ jobs:
 
   sca:
     name: Software Composition Analysis
-    needs: secrets
+    needs: [ secrets, enumerate ]
     runs-on: ubuntu-latest
     permissions:
       actions: read
@@ -94,7 +94,7 @@ jobs:
 
   sast:
     name: Static App Security Test
-    needs: secrets
+    needs: [ secrets, enumerate ]
     runs-on: ubuntu-latest
     strategy:
       matrix:
