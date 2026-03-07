@@ -58,4 +58,4 @@ stop:
 .SILENT: docs
 
 docs: 
-	uv run mkdocs serve 
+	uv run mkdocs serve --dev-addr=0.0.0.0:5050

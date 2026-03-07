@@ -1,2 +1,9 @@
+---
 site_name: swordfish
-theme: readthedocs
+theme:
+  name: null
+  custom_dir: docs/theme
+extra_css:
+  - css/theme.css
+nav:
+  - "Design": design.md
