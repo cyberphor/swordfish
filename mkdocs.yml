@@ -1,1 +1,5 @@
 site_name: swordfish
+theme: readthedocs
+markdown_extensions:
+  - md_in_html
+  - pymdownx.snippets
