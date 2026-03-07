@@ -6,8 +6,20 @@ on:
     branches: [ "**" ]
 
 jobs:
+  secrets:
+    name: Secrets Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone the repository
+        uses: actions/checkout@v4
+      - name: Run Trufflehog
+        id: trufflehog
+        uses: trufflesecurity/trufflehog@main
+        continue-on-error: false
+
   enumerate:
     name: Container Enumeration
+    needs: secrets
     runs-on: ubuntu-latest
     outputs:
       containers: ${{ steps.parse.outputs.containers }}
@@ -20,16 +32,19 @@ jobs:
           containers=$(yq '[.services.[] | .build] | unique | map(select(. != null))' compose.yml -o json | jq -c .)
           echo "containers=$containers" >> $GITHUB_OUTPUT
 
-  secrets:
-    name: Secrets Check
+  dockerfile:
+    name: Dockerfile Lint Check
+    needs: enumerate 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        container: ${{ fromJson(needs.enumerate.outputs.containers) }}
+      fail-fast: false
     steps:
-      - name: Clone the repository
-        uses: actions/checkout@v4
-      - name: Run Trufflehog
-        id: trufflehog
-        uses: trufflesecurity/trufflehog@main
-        continue-on-error: false
+      - uses: actions/checkout@v3
+      - uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: ${{ matrix.container }}/Dockerfile
 
   qa:
     name: Quality Assurance Check

@@ -7,7 +7,6 @@ from strands import Agent
 from strands.models.openai import OpenAIModel
 from strands.tools.mcp import MCPClient
 
-
 # Connect to an MCP server using SSE transport.
 sse_mcp_client = MCPClient(lambda: sse_client("http://localhost:8282/sse"))
 
