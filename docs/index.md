@@ -151,11 +151,10 @@
     <span class="sf-terminal-label">deathlabs / swordfish</span>
   </div>
   <div class="sf-body">
-    <div class="sf-eyebrow">security intelligence · v0.1</div>
+    <div class="sf-eyebrow">artificial intelligence · v0.0.1</div>
     <div class="sf-title"><span class="sf-accent">//</span> SWORD<span class="sf-accent">FISH</span></div>
     <p class="sf-tagline">
-      An AI-powered interface for <strong>cutting through</strong> your security data —
-      query, correlate, and reason over findings without writing a single SQL clause.
+      An AI-powered interface for cutting through security data with speed and precision.
     </p>
     <div class="sf-divider"></div>
     <div class="sf-meta">
