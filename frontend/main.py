@@ -1,9 +1,7 @@
-# streamlit_app.py
 import streamlit as st
 import requests
 
 st.title("Swordfish")
-API = st.text_input("API base", "http://localhost:8181")
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -18,9 +16,10 @@ if prompt := st.chat_input("Say something"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    response = requests.post(f"{API}/api", json={"message": prompt}, timeout=60)
+    response = requests.post(f"http://swordfish-backend:8181/api", json={"message": prompt}, timeout=60)
     response.raise_for_status()
-    text = response.json()["choices"][0]["text"]
+    print(response)
+    text = response.json()
 
     st.session_state.messages.append({"role": "assistant", "content": text})
 

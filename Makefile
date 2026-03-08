@@ -3,6 +3,7 @@
 # ---------------------------------------------------------
 
 .DEFAULT_GOAL := build
+COMPOSE_BAKE := true
 ENV_FILE ?= .env
 include $(ENV_FILE)
 

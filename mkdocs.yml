@@ -6,4 +6,7 @@ theme:
 extra_css:
   - css/theme.css
 nav:
-  - "Design": design.md
+  - "Getting Started": user-guide/getting-started.md
+  - "Architecture": developer-guide/architecture.md
+  - "Data Flow": developer-guide/data-flow.md
+  - "Design Principles": developer-guide/design-principles.md
