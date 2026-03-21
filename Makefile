@@ -1,29 +1,19 @@
 # ---------------------------------------------------------
-# Set the default target.
+# Misc.
 # ---------------------------------------------------------
 
+# Set the default goal.
 .DEFAULT_GOAL := build
 
-# ---------------------------------------------------------
-# Load environment variables and secrets.
-# ---------------------------------------------------------
+# Tell Docker to build images in parallel.
+COMPOSE_BAKE := true
 
-.PHONY: print-dot-env-files-used
-.SILENT: print-dot-env-files-used
-
-# Load the specified environment variables file.
-ENV_FILE ?= .env.local
+# Set the environment variables file to ".env" if an argument is not provided.
+ENV_FILE ?= .env
 include $(ENV_FILE)
-
-# Load the specified environment variables file.
-SECRETS_FILE ?= .env.local.secrets
-include $(SECRETS_FILE)
 
 # Set the Docker Compose profile to "all" if an argument is not provided.
 DOCKER_COMPOSE_PROFILE ?= all
-
-print-dot-env-files-used:
-	@echo "[+] Set environment variables using $(ENV_FILE) and $(SECRETS_FILE)"
 
 # ---------------------------------------------------------
 # Build the containers.
@@ -32,8 +22,8 @@ print-dot-env-files-used:
 .PHONY: build
 .SILENT: build
 
-build: print-dot-env-files-used
-	docker compose --profile $(DOCKER_COMPOSE_PROFILE) --env-file $(ENV_FILE) --env-file $(SECRETS_FILE) build --no-cache 
+build: 
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) --env-file $(ENV_FILE) build --no-cache 
 
 # ---------------------------------------------------------
 # Start the containers.
@@ -42,8 +32,8 @@ build: print-dot-env-files-used
 .PHONY: start
 .SILENT: start
 
-start: print-dot-env-files-used
-	docker compose --profile $(DOCKER_COMPOSE_PROFILE) --env-file $(ENV_FILE) --env-file $(SECRETS_FILE) up -d
+start:
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) --env-file $(ENV_FILE) up -d
 
 # ---------------------------------------------------------
 # Stop the containers.
@@ -52,5 +42,5 @@ start: print-dot-env-files-used
 .PHONY: stop
 .SILENT: stop
 
-stop: print-dot-env-files-used
-	docker compose --profile $(DOCKER_COMPOSE_PROFILE) --env-file $(ENV_FILE) --env-file $(SECRETS_FILE) down
+stop: 
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) --env-file $(ENV_FILE) down
