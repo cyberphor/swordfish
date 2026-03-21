@@ -16,9 +16,12 @@ if prompt := st.chat_input("Say something"):
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    response = requests.post(f"http://swordfish-backend:8181/api", json={"message": prompt}, timeout=60)
+    response = requests.post(
+        "http://swordfish-agent:8181/api/v1/",
+        json={"message": prompt},
+        timeout=60,
+    )
     response.raise_for_status()
-    print(response)
     text = response.json()
 
     st.session_state.messages.append({"role": "assistant", "content": text})

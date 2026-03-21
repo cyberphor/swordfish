@@ -1,9 +1,14 @@
 # ---------------------------------------------------------
-# Load the specified environment variables file.
+# Misc.
 # ---------------------------------------------------------
 
+# Set the default goal.
 .DEFAULT_GOAL := build
+
+# Tell Docker to build images in parallel.
 COMPOSE_BAKE := true
+
+# Set the environment variables file to ".env" if an argument is not provided.
 ENV_FILE ?= .env
 include $(ENV_FILE)
 
@@ -31,17 +36,6 @@ start:
 	docker compose --profile $(DOCKER_COMPOSE_PROFILE) --env-file $(ENV_FILE) up -d
 
 # ---------------------------------------------------------
-# Verify the eMASS API server works.
-# ---------------------------------------------------------
-
-.PHONY: verify
-.SILENT: verify
-
-verify: 
-	curl -X POST http://localhost:4010/api/api-key -H "user-uid: ${EMASS_USER_UID}" -H "api-key: ${EMASS_API_KEY}" &&\
-	echo ""
-
-# ---------------------------------------------------------
 # Stop the containers.
 # ---------------------------------------------------------
 
@@ -50,13 +44,3 @@ verify:
 
 stop: 
 	docker compose --profile $(DOCKER_COMPOSE_PROFILE) --env-file $(ENV_FILE) down
-
-# ---------------------------------------------------------
-# Build and serve the docs.
-# ---------------------------------------------------------
-
-.PHONY: docs
-.SILENT: docs
-
-docs: 
-	uv run mkdocs serve --dev-addr=0.0.0.0:5050

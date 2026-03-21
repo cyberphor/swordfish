@@ -1,5 +1,15 @@
 services:
 
+  docs:
+    profiles: [ all, docs ]
+    build: docs
+    image: swordfish/docs:latest
+    container_name: swordfish-docs
+    ports:
+      - "5050:5050"
+    env_file:
+      - .env
+
   emass:
     profiles: [ all, emass ]
     build: emass
@@ -10,21 +20,21 @@ services:
     env_file:
       - .env
 
-  mcp-server:
-    profiles: [ all, mcp-server ]
-    build: mcp-server
-    image: swordfish/mcp-server:latest
-    container_name: swordfish-mcp-server
+  tools:
+    profiles: [ all, tools ]
+    build: tools
+    image: swordfish/tools:latest
+    container_name: swordfish-tools
     ports:
       - "8282:8282"
     env_file:
       - .env
 
-  backend:
-    profiles: [ all, backend ]
-    build: backend
-    image: swordfish/backend:latest
-    container_name: swordfish-backend
+  agent:
+    profiles: [ all, agent ]
+    build: agent/openai_gpt-4o
+    image: swordfish/agent:latest
+    container_name: swordfish-agent
     ports:
       - "8181:8181"
     env_file:

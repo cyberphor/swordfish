@@ -1,4 +1,0 @@
-fastapi
-strands-agents
-strands-agents-tools
-openai
