@@ -2,13 +2,6 @@
 
 Swordfish is composed of three components: a frontend, backend, and MCP server.
 
-```
-               llm         emass
-                ^            ^
-                |            |
-frontend --> backend --> mcp-server
-```
-
 ## Frontend
 
 The frontend container serves the user-facing interface. It is the entry point for all user interaction — queries are composed here and results are rendered here. It communicates exclusively with the backend; it has no direct knowledge of the LLM or eMASS.

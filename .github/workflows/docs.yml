@@ -21,7 +21,7 @@ jobs:
       - name: Install dependencies
         run: pip install mkdocs
       - name: Build docs
-        run: mkdocs build docs
+        run: mkdocs build --site-dir docs
       - name: Upload pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
