@@ -32,7 +32,7 @@ jobs:
         container:
           - emass
           - tools
-          - agent
+          - agent/openai_gpt-4o
           - frontend
           - docs
     steps:
@@ -52,7 +52,7 @@ jobs:
         container:
           - emass
           - tools
-          - agent
+          - agent/openai_gpt-4o
           - frontend
           - docs
     steps:
@@ -80,7 +80,7 @@ jobs:
         container:
           - emass
           - tools
-          - agent
+          - agent/openai_gpt-4o
           - frontend
           - docs
     steps:
@@ -107,7 +107,7 @@ jobs:
         container:
           - emass
           - tools
-          - agent
+          - agent/openai_gpt-4o
           - frontend
           - docs
     container:
