@@ -9,7 +9,7 @@ from azure.identity import (
 )
 from openai import AsyncAzureOpenAI
 from fastapi import FastAPI, Request
- 
+
 AZURE_TOKEN_SCOPES = getenv("AZURE_TOKEN_SCOPES")
 AZURE_OPENAI_ENDPOINT = getenv("AZURE_OPENAI_ENDPOINT")
 AZURE_OPENAI_API_VERSION = getenv("AZURE_OPENAI_API_VERSION")
