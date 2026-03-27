@@ -9,4 +9,4 @@ COPY swordfish/ swordfish/
 RUN chown -R swordfish:swordfish /home/swordfish
 USER swordfish
 EXPOSE 8181
-ENTRYPOINT [ "uvicorn", "swordfish.main:api", "--host 0.0.0.0", "--port", "8181" ]
+ENTRYPOINT [ "uvicorn", "swordfish.main:api", "--host", "0.0.0.0", "--port", "8181" ]

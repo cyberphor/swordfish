@@ -2,79 +2,26 @@
 
 This guide walks you through running swordfish locally. You will need an eMASS API key, and credentials for a supported LLM provider. 
 
-## Prerequisites
+## Agent
+```bash
+export AZURE_TENANT_ID="<REPLACE_ME>"
+export AZURE_CLIENT_ID="<REPLACE_ME>"
+export AZURE_CLIENT_SECRET="<REPLACE_ME>"
 
-- Docker and Docker Compose
-- An eMASS API key and base URL
-- An API key for your LLM provider (OpenAI, Anthropic, etc.)
+export AZURE_CLOUD="<REPLACE_ME>"
+export AZURE_AUTHORITY_HOSTS="<REPLACE_ME>"
+export AZURE_TOKEN_SCOPES="https://cognitiveservices.azure.<REPLACE_ME>/.default"
 
-## Installation
-
-Clone the repository:
-
-```
-git clone https://github.com/deathlabs/swordfish
-cd swordfish
-```
-
-Copy the example environment file and fill in your credentials:
-
-```
-cp .env.example .env
+export AZURE_OPENAI_ENDPOINT="https://<REPLACE_ME>.openai.azure.<REPLACE_ME>/"
+export AZURE_OPENAI_API_VERSION="<REPLACE_ME>"
+export AZURE_OPENAI_DEPLOYMENT="swordfish"
+export MCP_SERVER_ENDPOINT="http://swordfish-tools:8282/mcp"
 ```
 
-## Configuration
-
-Open `.env` and set the following values:
-
+## Tools
+```bash
+export EMASS_API_URL="<REPLACE_ME>"
+export EMASS_API_KEY="<REPLACE_ME>"
+export EMASS_API_UID="<REPLACE_ME>"
+export SERPER_API_KEY="<REPLACE_ME>"
 ```
-# LLM provider
-LLM_PROVIDER=anthropic
-LLM_API_KEY=your-api-key-here
-LLM_MODEL=claude-sonnet-4-6
-
-# eMASS
-EMASS_BASE_URL=https://your-emass-instance/api
-EMASS_API_KEY=your-emass-api-key
-EMASS_USER_UID=your-user-uid
-```
-
-`LLM_PROVIDER` controls which external LLM the backend connects to. Supported values are `anthropic` and `openai`.
-
-## Running
-
-Start all three containers with:
-
-```
-docker compose up
-```
-
-The frontend will be available at `http://localhost:3000`. The backend runs on port `8000` and the MCP server on port `8001` — both are internal to the compose network and not exposed directly in production.
-
-## Verify the setup
-
-Once the containers are up, open the frontend and try a simple query:
-
-```
-show me all open POA&Ms
-```
-
-If swordfish returns results, your eMASS connection is working. If you see a tool call error, double-check your `EMASS_BASE_URL` and `EMASS_API_KEY` values in `.env`.
-
-## Stopping
-
-```
-docker compose down
-```
-
-To also remove volumes:
-
-```
-docker compose down -v
-```
-
-## Next steps
-
-- Read the [Architecture](architecture.md) doc to understand how the containers interact
-- See the [Configuration](configuration.md) reference for all available environment variables
-- Check [Contributing](contributing.md) if you want to add a new eMASS tool

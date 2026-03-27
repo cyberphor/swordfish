@@ -1,46 +1,46 @@
+import httpx
 from os import environ
 from mcp.server.fastmcp import FastMCP
-import httpx
 
 mcp = FastMCP(name="swordfish", host="0.0.0.0", port=8282, debug=True, log_level="DEBUG")
 
-EMASS_BASE_URL = environ.get("EMASS_BASE_URL", "")
+EMASS_API_URL = environ.get("EMASS_API_URL", "")
 EMASS_API_KEY = environ.get("EMASS_API_KEY", "")
-EMASS_USER_UID = environ.get("EMASS_USER_UID", "")
+EMASS_API_UID = environ.get("EMASS_API_UID", "")
 SERPER_API_KEY = environ.get("SERPER_API_KEY", "")
 
 def _headers() -> dict:
     return {
         "api-key": EMASS_API_KEY,
-        "user-uid": EMASS_USER_UID,
+        "user-uid": EMASS_API_UID,
         "accept": "application/json",
         "content-type": "application/json",
     }
 
 
 def _get(path: str, params: dict = None) -> dict:
-    url = f"{EMASS_BASE_URL}{path}"
+    url = f"{EMASS_API_URL}{path}"
     response = httpx.get(url, headers=_headers(), params=params, timeout=30)
     response.raise_for_status()
     return response.json()
 
 
 def _post(path: str, body: list) -> dict:
-    url = f"{EMASS_BASE_URL}{path}"
+    url = f"{EMASS_API_URL}{path}"
     response = httpx.post(url, headers=_headers(), json=body, timeout=30)
     response.raise_for_status()
     return response.json()
 
 
 def _put(path: str, body: list) -> dict:
-    url = f"{EMASS_BASE_URL}{path}"
+    url = f"{EMASS_API_URL}{path}"
     response = httpx.put(url, headers=_headers(), json=body, timeout=30)
     response.raise_for_status()
     return response.json()
 
 
 def _delete(path: str, body: list) -> dict:
-    url = f"{EMASS_BASE_URL}{path}"
+    url = f"{EMASS_API_URL}{path}"
     response = httpx.request("DELETE", url, headers=_headers(), json=body, timeout=30)
     response.raise_for_status()
     return response.json()
@@ -176,4 +176,4 @@ def web_search(query: str, num_results: int = 10) -> dict:
     return _serper_search(query, num_results)
 
 if __name__ == "__main__":
-    mcp.run(transport="sse")
+    mcp.run(transport="streamable-http")

@@ -19,7 +19,7 @@ DOCKER_COMPOSE_PROFILE ?= all
 .SILENT: build
  
 build:
-    docker compose --profile $(DOCKER_COMPOSE_PROFILE) build  
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) build
  
 # ---------------------------------------------------------
 # Start the containers.
@@ -29,7 +29,7 @@ build:
 .SILENT: start
  
 start:
-    docker compose --profile $(DOCKER_COMPOSE_PROFILE) up -d
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) up -d
  
 # ---------------------------------------------------------
 # Stop the containers.
@@ -39,7 +39,7 @@ start:
 .SILENT: stop
  
 stop:
-    docker compose --profile $(DOCKER_COMPOSE_PROFILE) down
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) down
  
 # ---------------------------------------------------------
 # Test the agent.
@@ -49,4 +49,4 @@ stop:
 .SILENT: test/agent
  
 test/agent:
-    curl -X POST localhost:8181/api/v1/ -d '{"message":"hello"}'; echo
+	curl -X POST localhost:8181/api/v1/ -d '{"message":"hello"}'; echo
