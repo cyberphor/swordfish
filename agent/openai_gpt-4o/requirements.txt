@@ -1,4 +1,7 @@
 fastapi
 openai
 mcp
+psycopg
+psycopg[pool]
+psycopg[binary]
 strands-agents

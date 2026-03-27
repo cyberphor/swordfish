@@ -1,0 +1,4 @@
+azure-identity
+fastapi
+openai
+openai-agents
