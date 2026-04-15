@@ -35,7 +35,7 @@ services:
       - "8181:8181"
     env_file:
       - agent/aoai_gpt-4o/.env
- 
+
   frontend:
     profiles: [ all, frontend ]
     build: frontend
