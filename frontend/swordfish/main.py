@@ -1,6 +1,9 @@
 import streamlit as st
+from os import getenv
 import requests
 import uuid
+
+LLM_SERVER_ENDPOINT = getenv("LLM_SERVER_ENDPOINT")
 
 st.title("Swordfish")
 
@@ -38,7 +41,7 @@ if prompt:
         st.markdown(prompt)
 
     response = requests.post(
-        "http://swordfish-agent:8181/api/v1/",
+        LLM_SERVER_ENDPOINT,
         json={
             "message": prompt,
             "session_id": st.session_state.session_id

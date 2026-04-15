@@ -1,5 +1,7 @@
 FROM alpine:3.23
 LABEL image.authors="Victor Fernandez III, <@cyberphor>"
+ARG LLM_SERVER_ENDPOINT="http://swordfish-agent:8181/api/v1/"
+ENV LLM_SERVER_ENDPOINT=${LLM_SERVER_ENDPOINT}
 WORKDIR /home/swordfish
 COPY .streamlit .streamlit
 COPY swordfish/ swordfish/
