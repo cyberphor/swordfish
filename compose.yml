@@ -1,5 +1,5 @@
 services:
- 
+
   docs:
     profiles: [ docs ]
     build: docs
@@ -9,7 +9,7 @@ services:
       - "5050:5050"
 
   emass:
-    profiles: [ all, emass ]
+    profiles: [ emass ]
     build: emass
     image: swordfish/emass:latest
     container_name: swordfish-emass
@@ -25,7 +25,11 @@ services:
       - "8282:8282"
     env_file:
       - tools/.env
- 
+    volumes:
+      - /usr/local/share/ca-certificates/Certificates_PKCS7_v5_14_DoD.der.crt:/usr/local/share/ca-certificates/Certificates_PKCS7_v5_14_DoD.der.crt
+    extra_hosts:
+      - "connect.emass.apps.mil:156.112.171.12"
+
   agent:
     profiles: [ all, agent ]
     build: agent/aoai_gpt-4o
@@ -43,3 +47,5 @@ services:
     container_name: swordfish-frontend
     ports:
       - "80:8501"
+    env_file:
+      - frontend/.env
