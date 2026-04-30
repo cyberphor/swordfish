@@ -40,13 +40,12 @@ start:
  
 stop:
 	docker compose --profile $(DOCKER_COMPOSE_PROFILE) down
- 
+
 # ---------------------------------------------------------
-# Test the agent.
+# Check the status of the containers.
 # ---------------------------------------------------------
- 
-.PHONY: test/agent
-.SILENT: test/agent
- 
-test/agent:
-	curl -X POST localhost:8181/api/v1/ -d '{"message":"hello"}'; echo
+.PHONY: status
+.SILENT: status
+
+status:
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) ps --format "table {{.Name}}\t{{.Ports}}\t{{.Status}}"

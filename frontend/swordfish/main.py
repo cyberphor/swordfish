@@ -1,25 +1,28 @@
 # Standard library imports.
 from os import environ
-from requests import post
+from requests import get, post
+from pathlib import Path
+from urllib.parse import quote
 from uuid import uuid4
 
 # Third party imports.
 import streamlit as st
 
-AGENT_SERVER_ENDPOINT = environ["AGENT_SERVER_ENDPOINT"]
+# Set constants.
+BACKEND_ENDPOINT = environ["BACKEND_ENDPOINT"]
 PROMPT_SUGGESTIONS = [
     "test connectivity to eMASS",
     "get data about a system",
     "is this cyber tasking order applicable to any of my emass records?",
 ]
 
+# Set session state.
 if "profiles" not in st.session_state:
     st.session_state.profiles = []
+profiles = st.session_state.profiles
 
 if "selected_profile_name" not in st.session_state:
     st.session_state.selected_profile_name = None
-
-profiles = st.session_state.profiles
 
 if "session_id" not in st.session_state:
     st.session_state.session_id = str(uuid4())
@@ -27,7 +30,57 @@ if "session_id" not in st.session_state:
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
+# Setup page.
 st.title("Swordfish")
+st.set_page_config(page_title="Swordfish")
+
+# Set the logo.
+svg_content = (Path(__file__).parent / "logo.svg").read_text()
+svg_encoded = quote(svg_content)
+st.markdown(
+    f"""
+    <style>
+    [data-testid="stAppViewContainer"] {{
+        background-image: url("data:image/svg+xml,{svg_encoded}");
+        background-repeat: no-repeat;
+        background-position: bottom 140px right 20px;
+        background-size: 180px;
+        background-attachment: fixed;
+    }}
+    </style>
+""",
+    unsafe_allow_html=True,
+)
+
+
+# Get JWT.
+def get_token_from_headers() -> str | None:
+    headers = st.context.headers
+    if not headers:
+        return None
+    auth = headers.get("Authorization")
+    if auth and auth.startswith("Bearer "):
+        return auth[len("Bearer ") :].strip()
+    return None
+
+
+def init_user() -> dict:
+    """Call backend to upsert user and return their profiles."""
+    token = get_token_from_headers()
+    headers = {"Authorization": f"Bearer {token}"} if token else {}
+    response = get(
+        url=f"{BACKEND_ENDPOINT}/users",
+        headers=headers,
+        timeout=10,
+    )
+    response.raise_for_status()
+    return response.json()
+
+
+if st.button("Create Account"):
+    response = get(url=f"{BACKEND_ENDPOINT}/users")
+    st.write(response.json())
+
 with st.sidebar:
     st.header("Profiles")
     with st.form("profile_form", clear_on_submit=True):
@@ -38,7 +91,13 @@ with st.sidebar:
         private_key = st.file_uploader("Private Key", type=["pem", "key", "txt"])
         submitted = st.form_submit_button("Save Profile")
         if submitted:
-            if not name or not user_uid or not api_key or not public_key or not private_key:
+            if (
+                not name
+                or not user_uid
+                or not api_key
+                or not public_key
+                or not private_key
+            ):
                 st.error("All fields are required.")
             elif any(profile["name"] == name for profile in profiles):
                 st.error("Profile name already exists.")
@@ -67,17 +126,19 @@ with st.sidebar:
             index=current_index,
         )
 
-    for i, profile in enumerate(profiles):
+    for index, profile in enumerate(profiles):
         with st.expander(profile["name"]):
             st.write(f'User UID: {profile["user_uid"]}')
             st.write(f'API Key: {"*" * len(profile["api_key"])}')
             st.write(f'Public Key: {profile["public_key_name"]}')
             st.write(f'Private Key: {profile["private_key_name"]}')
-            if st.button("Delete", key=f"delete_{i}"):
+            if st.button("Delete", key=f"delete_{index}"):
                 deleted_name = profile["name"]
-                profiles.pop(i)
+                profiles.pop(index)
                 if st.session_state.selected_profile_name == deleted_name:
-                    st.session_state.selected_profile_name = profiles[0]["name"] if profiles else None
+                    st.session_state.selected_profile_name = (
+                        profiles[0]["name"] if profiles else None
+                    )
                 st.rerun()
 
 selected_profile = next(
@@ -117,7 +178,7 @@ if prompt:
         text = "No profile selected."
     else:
         response = post(
-            AGENT_SERVER_ENDPOINT,
+            f"{BACKEND_ENDPOINT}/agent",
             data={
                 "message": prompt,
                 "session_id": st.session_state.session_id,
@@ -136,7 +197,7 @@ if prompt:
                     "application/x-pem-file",
                 ),
             },
-            timeout=60,
+            timeout=120,
         )
         response.raise_for_status()
         text = response.json()
