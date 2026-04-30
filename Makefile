@@ -19,7 +19,7 @@ DOCKER_COMPOSE_PROFILE ?= all
 .SILENT: build
  
 build:
-    docker compose --profile $(DOCKER_COMPOSE_PROFILE) build  
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) build
  
 # ---------------------------------------------------------
 # Start the containers.
@@ -29,7 +29,7 @@ build:
 .SILENT: start
  
 start:
-    docker compose --profile $(DOCKER_COMPOSE_PROFILE) up -d
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) up -d
  
 # ---------------------------------------------------------
 # Stop the containers.
@@ -39,14 +39,13 @@ start:
 .SILENT: stop
  
 stop:
-    docker compose --profile $(DOCKER_COMPOSE_PROFILE) down
- 
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) down
+
 # ---------------------------------------------------------
-# Test the agent.
+# Check the status of the containers.
 # ---------------------------------------------------------
- 
-.PHONY: test/agent
-.SILENT: test/agent
- 
-test/agent:
-    curl -X POST localhost:8181/api/v1/ -d '{"message":"hello"}'; echo
+.PHONY: status
+.SILENT: status
+
+status:
+	docker compose --profile $(DOCKER_COMPOSE_PROFILE) ps --format "table {{.Name}}\t{{.Ports}}\t{{.Status}}"

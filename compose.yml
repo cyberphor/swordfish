@@ -1,5 +1,49 @@
 services:
- 
+
+  backend:
+    profiles: [ all, backend ]
+    build: backend
+    image: swordfish/backend:latest
+    container_name: swordfish-backend
+    ports:
+      - "8181:8181"
+    env_file:
+      - backend/.env
+
+  fastmcp:
+    profiles: [ all, fastmcp ]
+    build: fastmcp
+    image: swordfish/fastmcp:latest
+    container_name: swordfish-fastmcp
+    ports:
+      - "8282:8282"
+    env_file:
+      - fastmcp/.env
+    volumes:
+      - /usr/local/share/ca-certificates/Certificates_PKCS7_v5_14_DoD.der.crt:/usr/local/share/ca-certificates/Certificates_PKCS7_v5_14_DoD.der.crt
+
+  frontend:
+    profiles: [ all, frontend ]
+    build: frontend
+    image: swordfish/frontend:latest
+    container_name: swordfish-frontend
+    ports:
+      - "80:8501"
+    env_file:
+      - frontend/.env
+
+  postgres:
+    profiles: [ all, postgres ]
+    build: postgres
+    image: swordfish/postgres:latest
+    container_name: swordfish-postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - swordfish_postgres:/var/lib/postgresql/data
+    env_file:
+      - postgres/.env
+
   docs:
     profiles: [ docs ]
     build: docs
@@ -8,38 +52,5 @@ services:
     ports:
       - "5050:5050"
 
-  emass:
-    profiles: [ all, emass ]
-    build: emass
-    image: swordfish/emass:latest
-    container_name: swordfish-emass
-    ports:
-      - "4010:4010"
- 
-  tools:
-    profiles: [ all, tools ]
-    build: tools
-    image: swordfish/tools:latest
-    container_name: swordfish-tools
-    ports:
-      - "8282:8282"
-    env_file:
-      - tools/.env
- 
-  agent:
-    profiles: [ all, agent ]
-    build: agent/aoai_gpt-4o
-    image: swordfish/agent:latest
-    container_name: swordfish-agent
-    ports:
-      - "8181:8181"
-    env_file:
-      - agent/aoai_gpt-4o/.env
- 
-  frontend:
-    profiles: [ all, frontend ]
-    build: frontend
-    image: swordfish/frontend:latest
-    container_name: swordfish-frontend
-    ports:
-      - "80:8501"
+volumes:
+  swordfish_postgres:

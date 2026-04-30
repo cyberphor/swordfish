@@ -2,3 +2,4 @@ azure-identity
 fastapi
 openai
 openai-agents
+psycopg2-binary
