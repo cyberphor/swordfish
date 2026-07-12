@@ -125,7 +125,7 @@ if "messages" not in st.session_state:
 
 # Set page metadata.
 st.set_page_config(page_title="Swordfish")
-if user: 
+if user:
     username = user[2]
 else:
     username = "world"

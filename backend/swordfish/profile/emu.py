@@ -23,7 +23,14 @@ def create_emu_config_profile_table():
 
 
 def create_emu_config_profile_handler(
-    name: str, user_id: str, user_uid: str, api_key: str, public_key_name: str, public_key: bytes, private_key_name: str,  private_key: bytes
+    name: str,
+    user_id: str,
+    user_uid: str,
+    api_key: str,
+    public_key_name: str,
+    public_key: bytes,
+    private_key_name: str,
+    private_key: bytes,
 ):
     connection = connect()
     cursor = connection.cursor()
@@ -31,7 +38,16 @@ def create_emu_config_profile_handler(
         """INSERT INTO emu_config_profiles
            (name, user_id, user_uid, api_key, public_key_name, public_key_bytes, private_key_name, private_key_bytes)
            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
-        (name, user_id, user_uid, api_key, public_key_name, public_key, private_key_name, private_key),
+        (
+            name,
+            user_id,
+            user_uid,
+            api_key,
+            public_key_name,
+            public_key,
+            private_key_name,
+            private_key,
+        ),
     )
     connection.commit()
     connection.close()
