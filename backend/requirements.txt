@@ -3,3 +3,4 @@ fastapi
 openai
 openai-agents
 psycopg2-binary
+pyjwt
