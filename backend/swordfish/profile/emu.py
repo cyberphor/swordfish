@@ -4,8 +4,7 @@ from psycopg2 import connect
 def create_emu_config_profile_table():
     connection = connect()
     cursor = connection.cursor()
-    cursor.execute(
-        """CREATE TABLE IF NOT EXISTS emu_config_profiles (
+    cursor.execute("""CREATE TABLE IF NOT EXISTS emu_config_profiles (
             id SERIAL PRIMARY KEY,
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             name TEXT,
@@ -16,8 +15,7 @@ def create_emu_config_profile_table():
             public_key_bytes BYTEA,
             private_key_name TEXT,
             private_key_bytes BYTEA
-        )"""
-    )
+        )""")
     connection.commit()
     connection.close()
 
@@ -35,9 +33,9 @@ def create_emu_config_profile_handler(
     connection = connect()
     cursor = connection.cursor()
     cursor.execute(
-        """INSERT INTO emu_config_profiles
-           (name, user_id, user_uid, api_key, public_key_name, public_key_bytes, private_key_name, private_key_bytes)
-           VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""",
+        """INSERT INTO emu_config_profiles (
+            name, user_id, user_uid, api_key, public_key_name, public_key_bytes, private_key_name, private_key_bytes)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s) """,
         (
             name,
             user_id,

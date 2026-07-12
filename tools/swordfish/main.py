@@ -130,8 +130,7 @@ def get_artifacts(system_id: int, headers: dict[str, str] = CurrentHeaders()) ->
         cert_file.flush()
         key_file.write(private_key_pem)
         key_file.flush()
-        config_file.write(
-            f"""---
+        config_file.write(f"""---
 url: {EMASS_API_URL}
 profiles:
   - name: default
@@ -144,8 +143,7 @@ systems:
 settings:
   output:
     format: json
-"""
-        )
+""")
         config_file.flush()
         env = environ.copy()
         env["EMASS_USER_UID_DEFAULT"] = user_uid
