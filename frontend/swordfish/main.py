@@ -23,6 +23,7 @@ class Profile:
 
 # Set environment variables.
 BACKEND_ENDPOINT = environ["BACKEND_ENDPOINT"]
+BACKEND_ENDPOINT = environ["BACKEND_ENDPOINT"]
 
 # Set constants.
 PROMPT_SUGGESTIONS = [

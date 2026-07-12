@@ -1,17 +1,41 @@
 services:
 
   backend:
-    profiles: [ all, backend ]
+    profiles: [ all, backend, database ]
     build: backend
     image: swordfish/backend:latest
     container_name: swordfish-backend
     ports:
-      - "8181:8181"
+      - "8000:8000"
     env_file:
       - backend/.env
     depends_on:
       database:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8000/api/v1/healthcheck/ > /dev/null || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+      start_period: 5s
+
+  database:
+    profiles: [ all, backend, database ]
+    build: database
+    image: swordfish/database:latest
+    container_name: swordfish-database
+    ports:
+      - "5432:5432"
+    volumes:
+      - database:/var/lib/postgresql/data
+    env_file:
+      - database/.env
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 2
+      start_period: 5s
 
   docs:
     profiles: [ docs ]
@@ -34,8 +58,17 @@ services:
   inference:
     profiles: [ all, inference ]
     build: inference
-    image: swordfish/tools:latest
+    image: swordfish/inference:latest
     container_name: swordfish-inference
+    ports:
+      - "8001:8001"
+    env_file:
+      - inference/.env
+    depends_on:
+      backend:
+        condition: service_healthy
+      tools:
+        condition: service_healthy
 
   tools:
     profiles: [ all, tools ]
@@ -43,27 +76,15 @@ services:
     image: swordfish/tools:latest
     container_name: swordfish-tools
     ports:
-      - "8282:8282"
+      - "8002:8002"
     env_file:
       - tools/.env
-
-  database:
-    profiles: [ all, database ]
-    build: database
-    image: swordfish/database:latest
-    container_name: swordfish-database
-    ports:
-      - "5432:5432"
-    volumes:
-      - swordfish_database:/var/lib/postgresql/data
-    env_file:
-      - database/.env
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:8002/api/v1/healthcheck > /dev/null || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 2
       start_period: 5s
 
 volumes:
-  swordfish_database:
+  database:

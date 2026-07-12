@@ -1,6 +1,3 @@
-azure-identity
-fastapi
-openai
-openai-agents
+django-ninja
 psycopg2-binary
-pyjwt
+tzdata
