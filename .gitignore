@@ -208,8 +208,9 @@ marimo/_lsp/
 __marimo__/
 
 *.gguf
-client.crt
-client.key
+*.cer
+*.crt
+*.key
 
 uv.lock
 .env.secrets

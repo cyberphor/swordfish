@@ -1,15 +1,16 @@
 ---
-name: check
+name: CI Pipeline
 
 on:
   push:
     branches: [ "**" ]
     paths:
       - "backend/**"
-      - "fastmcp/**"
+      - "tools/**"
       - "frontend/**"
 
 jobs:
+
   code-lint:
     name: Code Lint Check
     runs-on: ubuntu-latest
@@ -18,7 +19,7 @@ jobs:
       matrix:
         container:
           - backend
-          - fastmcp
+          - tools
           - frontend
     steps:
       - name: Clone the repository
@@ -40,11 +41,11 @@ jobs:
       matrix:
         container:
           - backend
-          - fastmcp
+          - tools
           - frontend
     steps:
       - uses: actions/checkout@v4
-      - uses: hadolint/hadolint-action@v3.1.0
+      - uses: hadolint/hadolint-action@v3.3.0
         with:
           failure-threshold: error
           dockerfile: ${{ matrix.container }}/Dockerfile
@@ -68,7 +69,7 @@ jobs:
       matrix:
         container:
           - backend
-          - fastmcp
+          - tools
           - frontend
     container:
       image: semgrep/semgrep
@@ -89,7 +90,7 @@ jobs:
       matrix:
         container:
           - backend
-          - fastmcp
+          - tools
           - frontend
     steps:
       - uses: actions/checkout@v6

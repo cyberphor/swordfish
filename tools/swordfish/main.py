@@ -1,7 +1,6 @@
 # Standard library imports.
 from base64 import b64decode
-from json import dumps, loads
-from logging import basicConfig, DEBUG, getLogger
+from logging import DEBUG, getLogger
 from logging.config import dictConfig
 from os import environ, path
 from ssl import SSLContext, PROTOCOL_TLS_CLIENT
@@ -95,7 +94,9 @@ def _emass_get_request(path: str, headers: dict[str, str]) -> dict:
         },
     )
     with urlopen(request, context=ctx, timeout=240) as response:
-        return loads(response.read())
+        output = response.read().decode("UTF-8")
+        print(output)
+        return output
 
 
 @mcp.tool(description="Test connectivity to eMASS.")
@@ -129,8 +130,7 @@ def get_artifacts(system_id: int, headers: dict[str, str] = CurrentHeaders()) ->
         cert_file.flush()
         key_file.write(private_key_pem)
         key_file.flush()
-        config_file.write(
-            f"""---
+        config_file.write(f"""---
 url: {EMASS_API_URL}
 profiles:
   - name: default
@@ -143,8 +143,7 @@ systems:
 settings:
   output:
     format: json
-"""
-        )
+""")
         config_file.flush()
         env = environ.copy()
         env["EMASS_USER_UID_DEFAULT"] = user_uid
@@ -165,10 +164,10 @@ settings:
             env=env,
         )
         output, errors = process.communicate(timeout=300)
-
     if process.returncode != 0:
         raise RuntimeError(f"emu failed: {errors}")
-    return loads(dumps({"output": output, "errors": errors}))
+    print(output)
+    return output
 
 
 if __name__ == "__main__":
