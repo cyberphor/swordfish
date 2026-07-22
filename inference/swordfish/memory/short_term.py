@@ -16,7 +16,6 @@ BACKEND_ENDPOINT = environ["BACKEND_ENDPOINT"]
 
 
 class DjangoCheckpointSaver(BaseCheckpointSaver):
-
     async def aget_tuple(self, config: dict) -> Optional[CheckpointTuple]:
         thread_id = config["configurable"]["thread_id"]
         checkpoint_id = get_checkpoint_id(config)

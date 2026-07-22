@@ -202,10 +202,10 @@ with st.sidebar:
 
     for index, profile in enumerate(profiles):
         with st.expander(profile["name"]):
-            st.write(f'User UID: {profile["user_uid"]}')
-            st.write(f'API Key: {"*" * len(profile["api_key"])}')
-            st.write(f'Public Key: {profile["public_key_name"]}')
-            st.write(f'Private Key: {profile["private_key_name"]}')
+            st.write(f"User UID: {profile['user_uid']}")
+            st.write(f"API Key: {'*' * len(profile['api_key'])}")
+            st.write(f"Public Key: {profile['public_key_name']}")
+            st.write(f"Private Key: {profile['private_key_name']}")
             if st.button("Delete", key=f"delete_{index}"):
                 deleted_name = profile["name"]
                 profiles.pop(index)
@@ -225,7 +225,7 @@ selected_profile = next(
 )
 
 if selected_profile:
-    st.caption(f'Using profile: {selected_profile["name"]}')
+    st.caption(f"Using profile: {selected_profile['name']}")
 else:
     st.caption("No profile selected")
 
